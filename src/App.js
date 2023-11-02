@@ -2,66 +2,41 @@ import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
+import Form from './components/Form';
+
 
 
 function App() {
-  {/*- [ ] Takım üyelerini içeren listeyi bir stateten render edin.*/}
-  const [members, setMembers] = useState([]);
+  const [memberList, setMemberList] = useState([]);
 
+  const addMember = (memberData) => {
+    setMemberList([...memberList, memberData]);
+    console.log("New member data > ", memberData);
+  }
 
-  {/*  - [ ] Üye listesine yeni bir üye eklemek için bir form oluşturun.*/}
-  const [newMember, setNewMember] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-  })
+  const updateMember = (memberData) => {
+    setMemberList(
+      memberList.map(member => {
+        if (member.id === memberData.id) {
+          return memberData;
+        }
+          return member;
+      })
+    )
+  };
 
   return (
     <div className="App">
-<h1>Any place in your app!</h1>
-     <Formik
-       initialValues={{ email: '', password: '' }}
-       validate={values => {
-         const errors = {};
-         if (!values.email) {
-           errors.email = 'Required';
-         } else if (
-           !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-         ) {
-           errors.email = 'Invalid email address';
-         }
-         return errors;
-       }}
-       onSubmit={(values, { setSubmitting }) => {
-         setTimeout(() => {
-           alert(JSON.stringify(values, null, 2));
-           setSubmitting(false);
-         }, 400);
-       }}
-     >
-       {({ isSubmitting }) => (
-         <Form>
-           <Field type="email" name="email" />
-           {/*<ErrorMessage name="email" component="div" />*/}
-
-            <br>
-            </br>
-
-           <Field type="password" name="password" />
-           {/*<ErrorMessage name="password" component="div" />*/}
-
-            <br>
-            </br>
-
-           <button type="submit" disabled={isSubmitting}>
-             Submit
-           </button>
-         </Form>
-       )}
-     </Formik>
+      {memberList.map(member) => (
+        <div>
+            <div>{member.name}</div>
+            <div>{member.email}</div>
+            <div>{member.role}</div>
+        </div>
+      )}
+      <Form addMember={addMember} updateMember={updateMember} />
     </div>
+
   );
 }
 
