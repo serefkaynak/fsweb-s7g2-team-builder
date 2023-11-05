@@ -8,6 +8,7 @@ import Form from './components/Form';
 
 function App() {
   const [memberList, setMemberList] = useState([]);
+  const [memberToUpdate, setMemberToUpdate] = useState(null);
 
   const addMember = (memberData) => {
     setMemberList([...memberList, memberData]);
@@ -27,14 +28,23 @@ function App() {
 
   return (
     <div className="App">
-      {memberList.map(member) => (
-        <div>
+      <div className='member-card header'>
+            <div>İsim:</div>
+            <div>Email:</div>
+            <div>Rol:</div> 
+            <div>İşlemler:</div>
+        </div>
+      {memberList.map(member => (
+        <div className='member-card'>
             <div>{member.name}</div>
             <div>{member.email}</div>
             <div>{member.role}</div>
+            <div>
+              <button onClick={() => setMemberToUpdate(member)}>Düzenle</button>
+            </div>
         </div>
-      )}
-      <Form addMember={addMember} updateMember={updateMember} />
+      ))}
+      <Form addMember={addMember} updateMember={updateMember} memberToUpdate={memberToUpdate} />
     </div>
 
   );
